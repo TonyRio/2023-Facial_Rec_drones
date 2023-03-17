@@ -1,9 +1,12 @@
 #Inicio dos testes
+
+
 import cv2
+
 import numpy as np
 
 # Carrega o modelo YOLO
-net = cv2.dnn.readNet("yolov4.weights", "yolov4.cfg")
+net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
 
 # Define as classes que o modelo pode identificar
 classes = []
