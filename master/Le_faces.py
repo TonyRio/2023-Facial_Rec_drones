@@ -25,7 +25,7 @@ while True:
 
         # reconhece o rosto e obtém o nome
         # você precisa implementar essa parte com o reconhecimento facial
-        name = "Desconhecido"
+        name = "sem Identidade :"
 
         # obtém a hora atual do sistema
         now = datetime.datetime.now()
