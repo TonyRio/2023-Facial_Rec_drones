@@ -1,3 +1,4 @@
+#Inicio dos testes
 import cv2
 import numpy as np
 
