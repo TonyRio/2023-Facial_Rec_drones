@@ -54,8 +54,10 @@ while True:
                 cv2.rectangle(frame, (x, y), (x + width, y + height), (0, 255, 0), 2)
                 cv2.putText(frame, classes[class_id], (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+
     # Mostra a imagem com as detecções
     cv2.imshow("Webcam", frame)
+
 
     # Aguarda a tecla 'q' para sair
     if cv2.waitKey(1) == ord('q'):
