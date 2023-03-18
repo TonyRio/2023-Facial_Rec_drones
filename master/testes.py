@@ -1,8 +1,9 @@
 #Inicio dos testes
 
 
-import cv2
 
+import cv2
+import matplotlib
 import numpy as np
 
 # Carrega o modelo YOLO
