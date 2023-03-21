@@ -1,6 +1,7 @@
 import cv2
 import time
 import os
+import HandTrackingModule as htm
 
 wCam, hCam = 640, 480
 
@@ -10,6 +11,8 @@ cap.set(4, hCam)
 
 folderPath = "FingerImages"
 myList = os.listdir(folderPath)
+print(myList)
+
 overlayList = []
 for imPath in myList:
     image = cv2.imread(f'{folderPath}/{imPath}')
@@ -18,12 +21,16 @@ for imPath in myList:
 print(len(overlayList))
 
 pTime=0
+
+
+detector = htm.handDetector(detectionCon=0)
+#img = detector.findHands(img)
+
 while True:
-
-
 # le a imagem e coloca do tamanho e coordenada
-
     success, img = cap.read()
+    img= detector.findHands(img)
+
     h, w, c = overlayList[0].shape
     img[0:h, 0:w] = overlayList[0]
 
