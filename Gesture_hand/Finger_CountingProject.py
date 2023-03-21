@@ -24,12 +24,42 @@ pTime=0
 
 
 detector = htm.handDetector(detectionCon=0)
+
+
+
+tipIds = [4, 8, 12, 16, 20]
 #img = detector.findHands(img)
 
 while True:
 # le a imagem e coloca do tamanho e coordenada
     success, img = cap.read()
     img= detector.findHands(img)
+    lmList = detector.findPosition(img, draw=False)
+    #print(lmList)
+
+    if len(lmList) != 0:
+        fingers = []
+
+# Loop para corrigir o polegar
+
+        if lmList[tipIds[0]][1] > lmList[tipIds[0] - 1][1]:
+            fingers.append(1)
+        else:
+            fingers.append(0)
+
+# Loop para 4 dedos
+
+        for id in range(1, 5):
+            if lmList[tipIds[id]][2] < lmList[tipIds[id]-2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+        #print(fingers)
+
+# Contando a quantidade de dedos
+        totalFinger = fingers.count(1)
+        print(totalFinger)
+
 
     h, w, c = overlayList[0].shape
     img[0:h, 0:w] = overlayList[0]
