@@ -17,10 +17,22 @@ for imPath in myList:
     overlayList.append(image)
 print(len(overlayList))
 
+pTime=0
 while True:
 
-    success, img = cap.read()
 
-    img[0:200, 0:200] = overlayList[0]
+# le a imagem e coloca do tamanho e coordenada
+
+    success, img = cap.read()
+    h, w, c = overlayList[0].shape
+    img[0:h, 0:w] = overlayList[0]
+
+# temporiza abertura
+
+    cTime = time.time()
+    fps = 1 / (cTime-pTime)
+    pTime = cTime
+
+    cv2.putText(img, f"FPS: {int(fps)}", (400,70), cv2.FONT_HERSHEY_COMPLEX, 3, (255,0,0), 3 )
     cv2.imshow("Imagem", img)
     cv2.waitKey(1)
