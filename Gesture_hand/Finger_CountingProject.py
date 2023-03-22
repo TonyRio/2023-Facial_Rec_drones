@@ -75,6 +75,6 @@ while True:
     fps = 1 / (cTime-pTime)
     pTime = cTime
 
-    cv2.putText(img, f"FPS: {int(fps)}", (400,70), cv2.FONT_HERSHEY_COMPLEX, 3, (255,0,0), 3 )
+    cv2.putText(img, f"FPS: {int(fps)}", (1000,50), cv2.FONT_HERSHEY_COMPLEX, 1, (255,0,0), 3 )
     cv2.imshow("Imagem", img)
     cv2.waitKey(1)
