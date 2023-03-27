@@ -1,6 +1,14 @@
 import cv2
 import datetime
+import os
 import time
+
+# Crie uma pasta "gravações" no diretório atual, se ela ainda não existir
+if not os.path.exists('gravações'):
+    os.makedirs('gravações')
+
+# Defina o caminho da pasta "gravações"
+caminho_gravacoes = os.path.join(os.getcwd(), 'gravações')
 
 # Defina a captura de vídeo a partir da webcam
 cap = cv2.VideoCapture(0)
@@ -37,10 +45,11 @@ while (cap.isOpened()):
                 saida_video.release()
 
             # Defina o nome do arquivo com base na hora atual
-            nome_arquivo = datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '.avi'
+            nome_arquivo = datetime.datetime.now().strftime('Cap-%Y%m%d_%H%M%S') + '.avi'
 
             # Crie um novo objeto de gravação de vídeo com o novo nome de arquivo
-            saida_video = cv2.VideoWriter(nome_arquivo, codec, fps, (frame_width, frame_height))
+            saida_video = cv2.VideoWriter(os.path.join(caminho_gravacoes, nome_arquivo), codec, fps,
+                                          (frame_width, frame_height))
 
             # Defina a hora de início do novo pacote
             hora_inicio_pacote = datetime.datetime.now()
