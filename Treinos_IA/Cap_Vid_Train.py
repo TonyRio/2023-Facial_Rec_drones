@@ -27,7 +27,7 @@ while (cap.isOpened()):
     nome_arquivo = f"{diretorio_saida}/video_{num_pacote}.avi"
 
     # Defina o objeto de gravação de vídeo e as dimensões do quadro
-    saida_video = cv2.VideoWriter(nome_arquivo, codec, fps, (224, 224))
+    saida_video = cv2.VideoWriter(nome_arquivo, codec, fps, (640, 480))
 
     # Defina o tempo de início do pacote
     tempo_inicio_pacote = cv2.getTickCount()
