@@ -37,11 +37,15 @@ while True:
     # print(fingers)
     cv2.rectangle(img, (frameR, frameR), (wCam - frameR, hCam - frameR),
                   (255, 0, 255), 2)
+
     # 4. Only Index Finger : Moving Mode
     if fingers[1] == 1 and fingers[2] == 0:
+
         # 5. Convert Coordinates
+
         x3 = np.interp(x1, (frameR, wCam - frameR), (0, wScr))
         y3 = np.interp(y1, (frameR, hCam - frameR), (0, hScr))
+
         # 6. Smoothen Values
         clocX = plocX + (x3 - plocX) / smoothening
         clocY = plocY + (y3 - plocY) / smoothening
@@ -53,6 +57,7 @@ while True:
 
     # 8. Both Index and middle fingers are up : Clicking Mode
     if fingers[1] == 1 and fingers[2] == 1:
+
         # 9. Find distance between fingers
         length, img, lineInfo = detector.findDistance(8, 12, img)
         print(length)
