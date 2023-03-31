@@ -66,7 +66,7 @@ while True:
             img[0:h, 0:w] = overlayList[totalFinger-1]
 
             cv2.rectangle(img, (20,480), (170, 700), (0,255,0), cv2.FILLED)
-            cv2.putText(img, str(totalFinger), (45, 640), cv2.FONT_HERSHEY_PLAIN, 10,(255,0,0), 25)
+            cv2.putText(img, str(totalFinger), (45, 640), cv2.FONT_HERSHEY_PLAIN, 5,(255,0,0), 25)
 
 
 # temporiza abertura
