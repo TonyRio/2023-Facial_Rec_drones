@@ -31,13 +31,14 @@ while True:
                     index_y = screen_height / frame_height * y
                     ptg.moveTo(index_x,index_y)
 
-                if id == 4:
+                if id == 12:
                     cv2.circle(img=frame, center =(x,y), radius=20, color=(0,255,255))
                     thumb_x = screen_width/frame_width * x
                     thumb_y = screen_height / frame_height * y
                     print('outside ', abs(index_y - thumb_y))
                     if abs(index_y - thumb_y) <20:
                         ptg.click()
+                        #print("------ CLICK -----")
                         ptg.sleep(1)
 
     #print(hands)
