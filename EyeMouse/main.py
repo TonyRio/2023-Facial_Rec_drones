@@ -38,7 +38,12 @@ while True:
             y = int(landmark.y * frame_h)  # define a altura do Frame
 # desenha circulos em volta do rosto nos seus varios pontos
             cv2.circle(frame, (x, y), 3, (0, 255, 255))
-
+            #print(left[0].y - left[1].y)
+# prepara para quando valor for menor clicar
+        if (left[0].y - left[1].y ) < 0.01:
+            ptg.click()
+            ptg.sleep(.5)
+            print(" C L I C K ")
 # mostrar imagem
     cv2.imshow("Mouse Ocular ", frame)
     cv2.waitKey(1)
