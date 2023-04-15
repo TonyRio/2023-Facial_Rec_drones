@@ -1,67 +1,63 @@
 import cv2
-import os
-import dlib
+import numpy as np
+from PIL import Image, ImageGrab
 
-# Caminho para o arquivo XML do classificador de faces do OpenCV
-caminho_classificador = 'caminho/para/o/arquivo/haarcascade_frontalface_default.xml'
 
-# Inicializa o classificador de faces do OpenCV
-classificador = cv2.CascadeClassifier(caminho_classificador)
+# Função para capturar a tela da GoPro
+def capture_gopro_screen():
+    # Capturar a tela utilizando o OpenCV
+    screen = np.array(ImageGrab.grab())
+    # Converter a imagem para escala de cinza
+    gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+    return gray
 
-# Inicializa o detector de faces do dlib
-detector = dlib.get_frontal_face_detector()
-
-# Caminho para o diretório onde as imagens de rostos serão salvos
-diretorio_rostos = 'caminho/para/o/diretorio/de/salvamento/rostos'
-
-# Caminho para o arquivo de lista de faces conhecidas
-arquivo_lista_faces_conhecidas = 'caminho/para/o/arquivo/lista_faces_conhecidas.txt'
-
-# Lista de faces conhecidas
-lista_faces_conhecidas = []
-
-# Lê a lista de faces conhecidas do arquivo
-with open(arquivo_lista_faces_conhecidas, 'r') as arquivo:
-    lista_faces_conhecidas = arquivo.read().splitlines()
-
-# Inicializa a captura de vídeo da GoPro Hero 3
-cap = cv2.VideoCapture('http://10.5.5.9:8080/live/amba.m3u8')
-
-while True:
-    # Lê um quadro do vídeo da GoPro
-    ret, quadro = cap.read()
-
-    # Converte o quadro para escala de cinza
-    gray = cv2.cvtColor(quadro, cv2.COLOR_BGR2GRAY)
-
-    # Detecta as faces no quadro usando o classificador do OpenCV
-    faces = classificador.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30),
+# Função para detectar rostos em uma imagem
+def detect_faces(image):
+    # Carregar o classificador de rostos do OpenCV
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    # Detectar rostos na imagem
+    faces = face_cascade.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30),
                                           flags=cv2.CASCADE_SCALE_IMAGE)
+    return faces
 
-    # Para cada face detectada
-    for (x, y, w, h) in faces:
-        # Desenha um retângulo ao redor da face no quadro
-        cv2.rectangle(quadro, (x, y), (x + w, y + h), (255, 0, 0), 2)
+# Função para salvar imagens de rostos encontrados
+def save_faces(image, faces, names):
+    # Loop através dos rostos detectados
+    for i, (x, y, w, h) in enumerate(faces):
+        # Recortar a região do rosto
+        face = image[y:y + h, x:x + w]
+        # Salvar a imagem do rosto com o nome informado
+        name = names[i]
+        cv2.imwrite(f'{name}_{i}.jpg', face)
 
-        # Extrai a região da face do quadro
-        regiao_face = quadro[y:y + h, x:x + w]
+# Função para criar o dataset de rostos
+def create_face_dataset():
+    # Capturar a tela da GoPro
+    screen = capture_gopro_screen()
+    # Detectar rostos na imagem capturada
+    faces = detect_faces(screen)
+    # Pedir nomeação para cada rosto identificado
+    names = []
+    for i in range(len(faces)):
+        name = input(f'Por favor, informe o nome para o rosto {i + 1}: ')
+        names.append(name)
+    # Salvar as imagens dos rostos encontrados
+    save_faces(screen, faces, names)
 
-        # Detecta a face na região usando o detector do dlib
-        dets = detector(regiao_face)
-
-        # Para cada face detectada pelo dlib
-        for det in dets:
-            # Converte as coordenadas do dlib para coordenadas relativas ao quadro
-            x1 = det.left() + x
-            y1 = det.top() + y
-            x2 = det.right() + x
-            y2 = det.bottom() + y
-
-            # Salva a imagem da face no diretório de rostos
-            nome = input("Digite o nome para a face identificada: ")
-            cv2.imwrite(os.path.join(diretorio_rostos, 'face_{}_{}.jpg'.format(nome, len(lista_faces_conhecidas))), regiao_face)
-
-            # Adiciona o nome da face à lista de faces conhecidas
-            lista_faces_conhecidas.append(nome)
-
-            # Salva o nome da face
+# Função para realizar o reconhecimento facial
+def recognize_faces(known_faces):
+    # Capturar a tela da GoPro
+    screen = capture_gopro_screen()
+    # Detectar rostos na imagem capturada
+    faces = detect_faces(screen)
+    # Loop através dos rostos detectados
+    for i, (x, y, w, h) in enumerate(faces):
+        # Recortar a região do rosto
+        face = screen[y:y + h, x:x + w]
+        # Realizar o reconhecimento facial comparando com a lista prévia de rostos conhecidos
+        # (neste exemplo, vamos apenas verificar se o rosto é igual a algum dos rostos conhecidos)
+        face_match = False
+        for known_face in known_faces:
+            # Comparar as imagens de rostos utilizando a diferença absoluta dos pixels
+            diff = cv2.absdiff(face, known_face)
+            diff = cv
