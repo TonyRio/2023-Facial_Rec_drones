@@ -70,18 +70,18 @@ while True:
                         if i == 0 or i == 7:
                            cv2.rectangle(frame, (0, 0), (mid_x, mid_y), (0, 0, 255), -1)
                         elif i == 1 or i == 6:
-                                cv2.rectangle(frame, (mid_x, mid_y), (width, height), (0, 0, 255), -1)
+                           cv2.rectangle(frame, (mid_x, mid_y), (width, height), (0, 0, 255), -1)
                         elif i == 2 or i == 3:
-                                cv2.rectangle(frame, (mid_x, 0), (width, height), (0, 255, 255), -1)
+                           cv2.rectangle(frame, (mid_x, 0), (width, height), (0, 255, 255), -1)
                         elif i == 4 or i == 5:
-                                cv2.rectangle(frame, (0, mid_y), (width, height), (0, 255, 0), -1)
+                           cv2.rectangle(frame, (0, mid_y), (width, height), (0, 255, 0), -1)
 
 
 
 
 
 
-            distances.append(distance)
+        distances.append(distance)
         min_distance_index = np.argmin(distances)
         min_distance_point = points[min_distance_index]
         cv2.line(frame, (face_center_x, face_center_y), min_distance_point, (0, 255, 255), 2)
